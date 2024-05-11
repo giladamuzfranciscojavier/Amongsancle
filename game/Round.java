@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -13,10 +14,12 @@ public class Round {
     ArrayList<Estudiante> estudiantes;
     ArrayList<Jugador> jugadores;
     ArrayList<Tarea> tareas;
+    HashMap<Jugador, String[]> playerStatus;
     Scanner sc;
 
-    public Round(ArrayList<Estudiante> est, ArrayList<Impostor> imp, ArrayList<Tarea> ta, Scanner sc){    
+    public Round(ArrayList<Estudiante> est, ArrayList<Impostor> imp, ArrayList<Tarea> ta,HashMap<Jugador, String[]> ps, Scanner sc){    
         
+        playerStatus=ps;
         tareas=ta;
         estudiantes = est;
         impostores = imp;
@@ -82,7 +85,7 @@ public class Round {
                                     break;
                                 }
                             }
-                            impostor.kill(e, it, jug, e.getHabitacionActual());
+                            impostor.kill(e, it, jug, e.getHabitacionActual(),playerStatus);
                             if(Settings.getDebug()){
                                 System.out.println(impostor.getAlias()+" ha matado a "+e.getAlias());
                             }
@@ -186,11 +189,13 @@ public class Round {
                     if(j.getClass().getName().equals("core.Impostor")){
                         jugadores.remove(j);
                         impostores.remove(j);
+                        playerStatus.put(j, new String[]{"impostor","muerto por expulsión"});
                         System.out.println(ConsoleCodes.GREEN+j.getAlias()+" era un impostor!"+ConsoleCodes.RESET);
                     }
                     else{
                         jugadores.remove(j);
                         estudiantes.remove(j);
+                        playerStatus.put(j, new String[]{"estudiante","muerto por expulsión"});
                         System.out.println(ConsoleCodes.RED+j.getAlias()+" NO era un impostor!"+ConsoleCodes.RESET);
                     }
                 }

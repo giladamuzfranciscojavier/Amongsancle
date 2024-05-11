@@ -11,7 +11,7 @@ public class Tarea implements Comparable<Tarea> {
 
     @Override
     public String toString() {
-        return nombre + " ("+habitacion.getNombre()+")";
+        return nombre + " en "+habitacion.getNombre();
     }
 
     public String getNombre() {
@@ -63,10 +63,10 @@ public class Tarea implements Comparable<Tarea> {
         }
 
         else{
-            if(nombre.compareTo(t.nombre)>1){
+            if(nombre.toLowerCase().compareTo(t.nombre.toLowerCase())>1){
                 return 1;
             }
-            else if(nombre.compareTo(t.nombre)<1){
+            else if(nombre.toLowerCase().compareTo(t.nombre.toLowerCase())<1){
                 return -1;
             }
             else{

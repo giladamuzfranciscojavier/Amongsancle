@@ -11,6 +11,8 @@ public class MenuController {
               
 
         Menu mainMenu = new Menu("Menú Principal", sc);
+        Menu config = new Menu("Configuración", sc);
+        mainMenu.addMenu(config);
         Menu tareas = new Menu("Tareas", sc);
         Menu habitaciones = new Menu("Habitaciones", sc);
         Menu jugadores = new Menu("Jugadores", sc);        
@@ -18,22 +20,23 @@ public class MenuController {
         tareas.addMenu(new AddTarea(sc));
         tareas.addMenu(new RemoveTarea(sc));
         tareas.addMenu(new VerTareas(sc));
-        mainMenu.addMenu(tareas);
+        config.addMenu(tareas);
 
         habitaciones.addMenu(new AddHabitacion(sc));
         habitaciones.addMenu(new RemoveHabitacion(sc));
         habitaciones.addMenu(new VerHabitaciones(sc));
-        mainMenu.addMenu(habitaciones);
+        config.addMenu(habitaciones);
 
         jugadores.addMenu(new AddJugador(sc));
         jugadores.addMenu(new RemoveJugador(sc));
         jugadores.addMenu(new VerJugadores(sc));
-        mainMenu.addMenu(jugadores);
+        config.addMenu(jugadores);
 
-        mainMenu.addMenu(new SetMaxTime(sc));
-        mainMenu.addMenu(new ProbMentira(sc));
+        config.addMenu(new SetMaxTime(sc));
+        config.addMenu(new ProbMentira(sc));
+        config.addMenu(new Debug(sc));        
         mainMenu.addMenu(new StartGame(sc));
-        mainMenu.addMenu(new Debug(sc));
+        
         
         
         //En caso de excepción se devuelve al jugador al menú principal

@@ -21,6 +21,7 @@ public class Menu extends ComponenteMenu{
 
     @Override
     public void ejecutar() throws IOException{
+        System.out.println(nombre+"\n");
         int numMenu=-1;
 
         System.out.print(ConsoleCodes.CLEAR);

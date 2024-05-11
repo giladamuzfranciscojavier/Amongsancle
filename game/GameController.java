@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 import core.*;
@@ -11,6 +12,8 @@ public class GameController {
     //Versión de las listas que permanecerá en memoria en caso de reiniciar
     ArrayList<Estudiante> saveEstudiantes;
     ArrayList<Impostor> saveImpostores;
+
+
     ArrayList<Jugador> jugadores;
     ArrayList<Estudiante> estudiantes;
     ArrayList<Impostor> impostores;
@@ -59,11 +62,21 @@ public class GameController {
         start();
     }
 
-    public void start(){
+    public void start(){        
+
         estudiantes = new ArrayList<>();
         load(estudiantes, saveEstudiantes);
         impostores = new ArrayList<>();
         load(impostores, saveImpostores);
+
+        //Mapa para almacenar el estado de los jugadores
+        HashMap<Jugador, String[]> playerStatus = new HashMap<>();
+        for (Estudiante jugador : estudiantes) {
+            playerStatus.put(jugador, new String[]{"estudiante", "vivo"});
+        }
+        for (Impostor jugador : impostores) {
+            playerStatus.put(jugador, new String[]{"impostor", "vivo"});
+        }
 
         //Se limpian las habitaciones por si quedan muertos de una partida anterior
         for (Tarea tarea : tareas) {
@@ -74,7 +87,10 @@ public class GameController {
 
         int status;
 
-        while ((status = new Round(estudiantes, impostores, tareas, sc).status())==0) {}
+        while ((status = new Round(estudiantes, impostores, tareas,playerStatus, sc).status())==0) {
+            System.out.println("Fin de la ronda. Presiona ENTER para continuar");
+            sc.nextLine();
+        }
 
         switch (status) {
 
@@ -90,6 +106,13 @@ public class GameController {
                 System.out.println("\nbug\n");
                 break;
         }
+
+        System.out.println("Estado de los jugadores\n"+
+                            "-----------------------");
+        for (Jugador j : playerStatus.keySet()) {
+            System.out.println(j.getAlias()+" era un "+playerStatus.get(j)[0]+" y acabó el juego "+playerStatus.get(j)[1]);
+        }
+        System.out.println();
 
         while (true) {
             System.out.println("Quieres reiniciar esta partida?(s/n)");

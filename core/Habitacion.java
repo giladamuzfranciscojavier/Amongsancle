@@ -55,7 +55,7 @@ public class Habitacion implements Comparable<Habitacion>{
 
     @Override
     public int compareTo(Habitacion h) {
-        return nombre.compareTo(h.nombre);
+        return nombre.toLowerCase().compareTo(h.nombre.toLowerCase());
     }
 
     @Override

@@ -325,6 +325,7 @@ class ProbMentira extends ComponenteMenu{
         }
 
         nombre = "Configurar probabilidad de acusaciones falsas. Probabilidad actual: "+(int)(Settings.getProbMentira()*100);
+        padre.ejecutar();
     }
 }
 
@@ -354,7 +355,8 @@ class Debug extends ComponenteMenu{
         }
         else{
             Settings.setDebug(false);
-            System.out.println("Activar modo debug (se muestra quien mata a quien)");
+            nombre="Activar modo debug (se muestra quien mata a quien)";
         }
+        padre.ejecutar();
     }
 }

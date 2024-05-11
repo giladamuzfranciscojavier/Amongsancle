@@ -21,7 +21,7 @@ public class Settings {
         tareas = new ArrayList<>();
         jugadores = new ArrayList<>();
         habitaciones = new ArrayList<>();
-        tiempoMax = 30;    
+        tiempoMax = 15;    
 
         probMentira = .5;
 
@@ -109,7 +109,7 @@ public class Settings {
 
     static public void addHabitacion(String habitacion) {
         habitaciones.add(new Habitacion(habitacion));
-        tareas.sort(null);
+        habitaciones.sort(null);
     }
 
     static public void removeTarea(Tarea t){
