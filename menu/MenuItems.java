@@ -1,10 +1,12 @@
 package menu;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import tools.ConsoleCodes;
+import core.Habitacion;
 import core.Settings;
 import core.Tarea;
 import game.GameController;
@@ -27,10 +29,28 @@ class AddTarea extends ComponenteMenu{
             t=sc.nextLine();
         }
 
-        while (h.strip().length()==0) {
-            System.out.println("\nIntroduce el nombre de la habitación en la que se realiza la tarea");
-            h=sc.nextLine();
+        System.out.println();
+
+        ArrayList<Habitacion> list = Settings.getHabitaciones();
+
+        for(int i = 0;i<list.size();i++){
+            System.out.println(i+". "+list.get(i).getNombre());
         }
+
+        System.out.println("\nSelecciona la habitación");
+
+        String opcion = sc.nextLine();
+        int numMenu=-1;
+
+        if(opcion.matches("\\d+")){
+            int numOpcion = Integer.parseInt(opcion);
+
+            if(numOpcion>=0 && numOpcion<list.size()){
+                numMenu=numOpcion;       
+                h = list.get(numMenu).getNombre();                
+            }
+        }
+
         Settings.addTarea(t, h);  
         padre.ejecutar();        
     }
@@ -47,7 +67,6 @@ class RemoveTarea extends ComponenteMenu{
     void ejecutar() throws IOException {
         System.out.println(ConsoleCodes.CLEAR);
 
-        System.out.println(ConsoleCodes.CLEAR);
         List<Tarea> list = Settings.getTareas();
 
         for(int i = 0;i<list.size();i++){
@@ -61,7 +80,6 @@ class RemoveTarea extends ComponenteMenu{
 
         String opcion = sc.nextLine();
 
-        @SuppressWarnings("unused")
         int numMenu=-1;
 
         if(opcion.matches("\\d+")){
@@ -69,7 +87,7 @@ class RemoveTarea extends ComponenteMenu{
 
             if(numOpcion>=0 && numOpcion<list.size()){
                 numMenu=numOpcion;       
-                Settings.RemoveTarea(list.get(numOpcion));                
+                Settings.removeTarea(list.get(numMenu));                
             }
         }
 
@@ -156,7 +174,7 @@ class RemoveJugador extends ComponenteMenu{
             if(numOpcion>=0 && numOpcion<list.size()){
                 numMenu=numOpcion;     
                 
-                Settings.RemoveJugador(list.get(numMenu));    
+                Settings.removeJugador(list.get(numMenu));    
             }
         }
         padre.ejecutar(); 
@@ -202,6 +220,114 @@ class SetMaxTime extends ComponenteMenu{
 }
 
 
+class AddHabitacion extends ComponenteMenu{
+    AddHabitacion(Scanner sc){
+        super("Añadir habitación", sc);
+    }
+
+    @Override
+    void ejecutar() throws IOException {
+        System.out.println(ConsoleCodes.CLEAR);
+        
+        String h = "";       
+
+        while (h.strip().length()==0) {
+            System.out.println("\nIntroduce el nombre de la habitación");
+            h=sc.nextLine();
+        }
+        Settings.addHabitacion(h);  
+        padre.ejecutar();     
+
+    
+    }
+}
+
+
+class RemoveHabitacion extends ComponenteMenu{
+    RemoveHabitacion(Scanner sc) {
+        super("Eliminar Habitación", sc);        
+    }
+
+    @Override
+    void ejecutar() throws IOException {
+        System.out.println(ConsoleCodes.CLEAR);
+        List<Habitacion> list = Settings.getHabitaciones();
+
+        for(int i = 0;i<list.size();i++){
+            System.out.println(i+". "+list.get(i).getNombre());
+        }
+
+        System.out.println(list.size()+". Cancelar");
+
+        System.out.println();
+
+        System.out.println("Elige la habitación");
+
+        String opcion = sc.nextLine();
+
+        int numMenu=-1;
+
+        if(opcion.matches("\\d+")){
+            int numOpcion = Integer.parseInt(opcion);
+
+            if(numOpcion>=0 && numOpcion<list.size()){
+                numMenu=numOpcion;                     
+                Settings.RemoveHabitacion(list.get(numMenu));    
+            }
+        }
+        padre.ejecutar(); 
+    }
+}
+
+
+class VerHabitaciones extends ComponenteMenu{
+    VerHabitaciones(Scanner sc) {
+        super("Ver Habitaciones", sc);        
+    }
+
+    @Override
+    void ejecutar() throws IOException {
+        System.out.println(ConsoleCodes.CLEAR);
+        for (Habitacion h : Settings.getHabitaciones()) {
+            System.out.println(h.getNombre());
+        }
+        System.out.println("\nPresiona ENTER para continuar");
+        sc.nextLine();
+        padre.ejecutar();
+    }
+}
+
+class ProbMentira extends ComponenteMenu{
+    ProbMentira(Scanner sc){
+        super("Configurar probabilidad de acusaciones falsas. Probabilidad actual: "+(int)(Settings.getProbMentira()*100), sc);
+    }
+
+    @Override
+    void ejecutar() throws IOException {
+        System.out.println(ConsoleCodes.CLEAR);
+
+        System.out.println("Introducir probabilidad de acusaciones falsas (0-100). Cualquier entrada no válida restablecerá el valor por defecto (50)");
+
+        String input = sc.nextLine();
+
+        if(input.matches("\\d+")){
+            int in = Integer.parseInt(input);
+            if(in>-1 && in<101){
+                Settings.setProbMentira((double) in/100.0);
+            }
+            else{
+                Settings.setProbMentira(.5);
+            }
+        }
+
+        else{
+            Settings.setProbMentira(.5);
+        }
+
+        nombre = "Configurar probabilidad de acusaciones falsas. Probabilidad actual: "+(int)(Settings.getProbMentira()*100);
+    }
+}
+
 class StartGame extends ComponenteMenu{
     StartGame(Scanner sc){
         super("Jugar", sc);
@@ -209,7 +335,26 @@ class StartGame extends ComponenteMenu{
 
     @Override
     void ejecutar() throws IOException {
-        GameController game = new GameController();
-        game.start();
+        System.out.println(ConsoleCodes.CLEAR);
+        new GameController();
+    }
+}
+
+
+class Debug extends ComponenteMenu{
+    Debug(Scanner sc){
+        super("Activar modo debug (se muestra quien mata a quien)", sc);
+    }
+
+    @Override
+    void ejecutar() throws IOException {
+        if(!Settings.getDebug()){
+            Settings.setDebug(true);
+            nombre="Desactivar modo debug (se muestra quien mata a quien)";
+        }
+        else{
+            Settings.setDebug(false);
+            System.out.println("Activar modo debug (se muestra quien mata a quien)");
+        }
     }
 }

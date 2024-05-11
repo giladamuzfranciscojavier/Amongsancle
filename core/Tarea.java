@@ -1,24 +1,24 @@
 package core;
 
 public class Tarea implements Comparable<Tarea> {
-    String nombre;
-    String habitacion;
+    private String nombre;
+    private Habitacion habitacion;
 
-    Tarea(String nombre, String habitacion){
+    Tarea(String nombre, Habitacion habitacion){
         this.nombre=nombre;
         this.habitacion=habitacion;
     }
 
     @Override
     public String toString() {
-        return nombre + " ("+habitacion+")";
+        return nombre + " ("+habitacion.getNombre()+")";
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getHabitacion() {
+    public Habitacion getHabitacion() {
         return habitacion;
     }
 

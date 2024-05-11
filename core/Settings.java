@@ -3,18 +3,28 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Settings {
     static ArrayList<Tarea> tareas;
+    static ArrayList<Habitacion> habitaciones;
     //No tiene sentido listar objetos Jugador ya que el rol se asigna en partida y por lo tanto sería redundante
     static ArrayList<String> jugadores;       
-    static int tiempoMax;    
+    static int tiempoMax;   
+    static boolean debug; 
+
+    //La probabilidad de que una acusación sea mentira
+    static double probMentira;
 
     //Inicialización y restablecimiento a las opciones por defecto
     public static void init(){
         tareas = new ArrayList<>();
         jugadores = new ArrayList<>();
+        habitaciones = new ArrayList<>();
         tiempoMax = 30;    
+
+        probMentira = .5;
+
         Settings.addTarea("Reparar el proyector","Aula de la bodega");     
         Settings.addTarea("Encontrar documento","Secretaria");
         Settings.addTarea("Cambiar cable Ethernet","Sala de profesorado");
@@ -43,12 +53,66 @@ public class Settings {
         return temp;
     }
 
+    public static double getProbMentira() {
+        return probMentira;
+    }
+
+    public static void setProbMentira(double probMentira) {
+        Settings.probMentira = probMentira;
+    }
+
     static public void addTarea(String tarea, String habitacion) {
-        tareas.add(new Tarea(tarea, habitacion));
+        Habitacion h = null;
+        
+        for (Habitacion habitacion2 : habitaciones) {
+            if(habitacion2.getNombre().equals(habitacion)){
+                h=habitacion2;
+                break;
+            }
+        }
+
+        if(h==null){
+            h = new Habitacion(habitacion);
+            habitaciones.add(h);
+            habitaciones.sort(null);
+        }
+
+        tareas.add(new Tarea(tarea, h));
         tareas.sort(null);
     }
 
-    static public void RemoveTarea(Tarea t){
+    public static ArrayList<Habitacion> getHabitaciones() {
+        ArrayList<Habitacion> temp = new ArrayList<>();
+
+        for (Habitacion h : habitaciones) {
+            temp.add(h);
+        }
+
+        return temp;
+    }  
+
+
+    //Elimina la habitación Y las tareas que pertenecen a la misma
+    static public void RemoveHabitacion(Habitacion h){
+
+        //Se utiliza un iterator para poder borrar las tareas que pertenezcan a la habitación que se va a eliminar
+        Iterator<Tarea> it = tareas.iterator();
+        while (it.hasNext()) {
+            Tarea t = it.next();
+            if(t.getHabitacion().getNombre().equals(h.getNombre())){
+                it.remove();
+            } 
+        }
+
+        habitaciones.remove(h);
+    }
+
+    static public void addHabitacion(String habitacion) {
+        habitaciones.add(new Habitacion(habitacion));
+        tareas.sort(null);
+    }
+
+    static public void removeTarea(Tarea t){
         tareas.remove(t);
     }
 
@@ -66,7 +130,7 @@ public class Settings {
         jugadores.sort(null);
     }
 
-    static public void RemoveJugador(String jugador){
+    static public void removeJugador(String jugador){
         jugadores.remove(jugador);
     }
 
@@ -80,5 +144,13 @@ public class Settings {
             tMax=5;
         }
         tiempoMax = tMax;
-    }   
+    }     
+
+    public static void setDebug(boolean d){
+        debug=d;
+    }
+
+    public static boolean getDebug(){
+        return debug;
+    }
 }
