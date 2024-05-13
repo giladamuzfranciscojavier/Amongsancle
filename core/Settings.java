@@ -55,6 +55,7 @@ public class Settings {
         settings.addJugador("xXx_aM0G0_xXx");     
         settings.addJugador("Streamer_Generico42069");
         settings.addJugador("SussyBaka");
+        settings.addJugador("NoSoySus");
         settings.addJugador("NoSeMeOcurrenMásNombres");
     }
 

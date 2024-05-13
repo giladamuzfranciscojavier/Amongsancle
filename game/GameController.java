@@ -50,11 +50,13 @@ public class GameController {
         jugadores = new ArrayList<>();
         jugadores.addAll(saveEstudiantes);jugadores.addAll(saveImpostores);
 
+        int numTareas = r.nextInt(5, tareas.size());
+
         //Se asignan las tareas. Los impostores también tendrán tareas, pero por razones evidentes no influirán en el resultado
         for (Jugador jugador : jugadores) {
             //Las tareas se pueden repetir entre jugadores, pero no en el mismo jugador
             ArrayList<Tarea> tareas = Settings.getSettings().getTareas();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < numTareas; i++) {
                 Tarea t = tareas.get(r.nextInt(tareas.size()));
                 tareas.remove(t);
                 jugador.addTarea(t);
