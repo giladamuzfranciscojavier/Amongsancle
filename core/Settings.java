@@ -16,6 +16,8 @@ public class Settings {
     //La probabilidad de que una acusación sea mentira
     static double probMentira;
 
+    private Settings(){}
+
     //Inicialización y restablecimiento a las opciones por defecto
     public static void init(){
         tareas = new ArrayList<>();
