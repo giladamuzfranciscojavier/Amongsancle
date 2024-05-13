@@ -11,14 +11,18 @@ import tools.ConsoleCodes;
 public class Round {
     
     ArrayList<Impostor> impostores;
+    boolean tiempoAgotado;
     ArrayList<Estudiante> estudiantes;
     ArrayList<Jugador> jugadores;
     ArrayList<Tarea> tareas;
     HashMap<Jugador, String[]> playerStatus;
+    int tiempoMax;
     Scanner sc;
 
-    public Round(ArrayList<Estudiante> est, ArrayList<Impostor> imp, ArrayList<Tarea> ta,HashMap<Jugador, String[]> ps, Scanner sc){    
+    public Round(ArrayList<Estudiante> est, ArrayList<Impostor> imp, ArrayList<Tarea> ta,HashMap<Jugador, String[]> ps,int tiempoMax, Scanner sc){    
         
+        this.tiempoMax = tiempoMax;
+        tiempoAgotado = false;
         playerStatus=ps;
         tareas=ta;
         estudiantes = est;
@@ -127,9 +131,10 @@ public class Round {
     }
 
     /*Devuelve el estado final de la ronda:
-        1: Juego ganado
-        -1: Juego perdido
-        0: Continúa el juego
+        2: Tiempo agotado
+        1: Continúa el juego
+        0: Juego ganado
+        -1: Juego perdido        
     */
     int status(){
         if(impostores.size()>=estudiantes.size()){
@@ -137,7 +142,7 @@ public class Round {
         }
 
         if(impostores.isEmpty()){
-            return 1;
+            return 0;
         }
 
         //Se comprueba si los estudiantes han terminado sus tareas
@@ -150,10 +155,14 @@ public class Round {
         }
 
         if(completado){
-            return 1;
+            return 0;
         }
 
-        return 0;
+        if(tiempoAgotado){
+            return 2;
+        }
+
+        return 1;
     }
 
 
@@ -163,8 +172,8 @@ public class Round {
 
 
     void acusaciones(){
-        System.out.println("\nEmpieza el juicio!\nQuién es el impostor?\nTiempo límite: "+Settings.getTiempoMax());
-        long limite = System.currentTimeMillis()+Settings.getTiempoMax()*1000;
+        System.out.println("\nEmpieza el juicio!\nQuién es el impostor?\nTiempo límite: "+tiempoMax);
+        long limite = System.currentTimeMillis()+tiempoMax*1000;
 
         for (int i = 0; i < jugadores.size(); i++) {
             System.out.println(i+". "+jugadores.get(i).getAlias());
@@ -212,7 +221,8 @@ public class Round {
         }
 
         else{
-            System.out.println("Se acabó el tiempo!");
+            System.out.println("Se acabó el tiempo!. Se reducirá el tiempo máximo en 5 segundos (hasta un mínimo de 5)");
+            tiempoAgotado=true;
         }    
         for (Tarea tarea : tareas) {
             tarea.getHabitacion().limpiaMuertos();

@@ -9,6 +9,8 @@ import tools.ScannerFactory;
 
 public class GameController {    
 
+    int tiempoMax = Settings.getTiempoMax();
+
     //Versión de las listas que permanecerá en memoria en caso de reiniciar
     ArrayList<Estudiante> saveEstudiantes;
     ArrayList<Impostor> saveImpostores;
@@ -87,14 +89,24 @@ public class GameController {
 
         int status;
 
-        while ((status = new Round(estudiantes, impostores, tareas,playerStatus, sc).status())==0) {
+        while ((status = new Round(estudiantes, impostores, tareas,playerStatus,tiempoMax, sc).status())>0) {
+            //Si se acaba el tiempo en un juicio se reduce el límite de tiempo en 5 segundos hasta como mínimo 5 segundos
+            if(status==2){
+                if(tiempoMax>10){
+                    tiempoMax-=5;
+                }
+                    
+                else{
+                    tiempoMax=5;
+                }
+            }
             System.out.println("Fin de la ronda. Presiona ENTER para continuar");
             sc.nextLine();
         }
 
         switch (status) {
 
-            case 1:   
+            case 0:   
                 System.out.println("\nVictoria\n");             
                 break;
 
