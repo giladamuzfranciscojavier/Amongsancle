@@ -15,6 +15,7 @@ public class Impostor extends Jugador {
 
     public void kill(Estudiante e, Iterator<Estudiante> es,Iterator<Jugador> j, Habitacion habitacion, HashMap<Jugador, String[]> playerStatus){
         eliminados.add(e);
+        eliminados.sort(null);
         es.remove();
         j.remove();
         habitacion.addMuerto(e);
