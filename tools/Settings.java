@@ -1,9 +1,12 @@
 //Clase en la que se guardan las opciones de configuración
 
-package core;
+package tools;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import core.Habitacion;
+import core.Tarea;
 
 public class Settings {
     ArrayList<Tarea> tareas;

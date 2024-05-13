@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 import core.*;
 import tools.ScannerFactory;
+import tools.Settings;
 
 public class GameController {    
 

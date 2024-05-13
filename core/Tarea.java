@@ -4,7 +4,7 @@ public class Tarea implements Comparable<Tarea> {
     private String nombre;
     private Habitacion habitacion;
 
-    Tarea(String nombre, Habitacion habitacion){
+    public Tarea(String nombre, Habitacion habitacion){
         this.nombre=nombre;
         this.habitacion=habitacion;
     }

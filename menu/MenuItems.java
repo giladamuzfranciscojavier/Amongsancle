@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import tools.ConsoleCodes;
+import tools.Settings;
 import core.Habitacion;
-import core.Settings;
 import core.Tarea;
 import game.GameController;
 
