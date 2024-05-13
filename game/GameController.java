@@ -1,7 +1,7 @@
 package game;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.Scanner;
 import core.*;
@@ -51,6 +51,10 @@ public class GameController {
         jugadores = new ArrayList<>();
         jugadores.addAll(saveEstudiantes);jugadores.addAll(saveImpostores);
 
+        saveImpostores.sort(null);
+        saveEstudiantes.sort(null);
+        jugadores.sort(null);
+
         int numTareas = r.nextInt(5, tareas.size());
 
         //Se asignan las tareas. Los impostores también tendrán tareas, pero por razones evidentes no influirán en el resultado
@@ -74,8 +78,15 @@ public class GameController {
         impostores = new ArrayList<>();
         load(impostores, saveImpostores);
 
-        //Mapa para almacenar el estado de los jugadores
-        HashMap<Jugador, String[]> playerStatus = new HashMap<>();
+        //Mapa para almacenar el estado de los jugadores. El String[] contiene el tipo de jugador y su estado (vivo o muerto junto con la causa de muerte)
+        LinkedHashMap<Jugador, String[]> playerStatus = new LinkedHashMap<>();
+
+        //Primero se introducen todos los jugadores para que el orden sea el adecuado
+        for (Jugador jugador:jugadores) {
+            playerStatus.put(jugador, null);
+        }
+
+        //Se introduce
         for (Estudiante jugador : estudiantes) {
             playerStatus.put(jugador, new String[]{"estudiante", "vivo"});
         }
