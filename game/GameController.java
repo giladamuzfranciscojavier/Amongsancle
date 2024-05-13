@@ -32,7 +32,7 @@ public class GameController {
         ArrayList<String> tempjugadores = Settings.getSettings().getJugadores();
         Random r = new Random();
         //Número máximo de impostores: la mitad del total de jugadores menos uno
-        int sus = r.nextInt(1, Math.max(1, tempjugadores.size()/2));
+        int sus = r.nextInt(1, Math.max(1, tempjugadores.size()/2-1));
         
         //Asigna impostores hasta el límite generado anteriormente
         while (saveImpostores.size()<sus) {

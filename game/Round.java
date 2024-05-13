@@ -47,7 +47,9 @@ public class Round {
             if(t!=null){
                 jugador.setHabitacionActual(t.getHabitacion());
                 if(jugador.getHabitacionActual().hasMuertos()){
-                    System.out.println(ConsoleCodes.RED+"El jugador "+jugador.getAlias()+" ha encontrado un muerto en "+t.getHabitacion()+"!"+ConsoleCodes.RESET);
+                    ArrayList<Jugador> m = jugador.getHabitacionActual().getMuertos();
+
+                    System.out.println(ConsoleCodes.RED+"El jugador "+jugador.getAlias()+" ha encontrado "+listaMuertos(m)+" en "+t.getHabitacion()+"!"+ConsoleCodes.RESET);
                     juicio = true;
                     try {
                         Thread.sleep(2000);
@@ -71,7 +73,8 @@ public class Round {
         }
 
         //Solo se mata si no se han encontrado muertos
-        if(!juicio){
+        if(!juicio){            
+            int acusaciones = 0;
             for (Impostor impostor : impostores) {
                 Iterator<Estudiante> it = estudiantes.iterator();
                 boolean mata=false;
@@ -99,14 +102,16 @@ public class Round {
     
                         //Si ya ha matado se sigue comprobando por si hubieran testigos
                         else{
-                            System.out.println("\n\n\n");
+                            System.out.println("\n\n\n");                            
+                            
+                            ArrayList<Jugador> m = e.getHabitacionActual().getMuertos();
 
                             //Probabilidad de que el testigo acuse al impostor. En caso contrario, el impostor intentará acusar al testigo
                             if(Math.random()>Settings.getSettings().getProbMentira()){
-                                System.out.println(ConsoleCodes.RED+e.getAlias()+" acusa a "+impostor.getAlias()+" de asesinato!"+ConsoleCodes.RESET);
+                                System.out.println(ConsoleCodes.RED+e.getAlias()+" acusa a "+impostor.getAlias()+" del asesinato de "+m.get(0).getAlias()+"!"+ConsoleCodes.RESET);                                
                             }
                             else{
-                                System.out.println(ConsoleCodes.RED+impostor.getAlias()+" acusa a "+e.getAlias()+" de asesinato!"+ConsoleCodes.RESET);
+                                System.out.println(ConsoleCodes.RED+impostor.getAlias()+" acusa a "+e.getAlias()+" del asesinato "+m.get(0).getAlias()+"!"+ConsoleCodes.RESET);
                             }
 
                             if(impostores.size()>=estudiantes.size()){
@@ -114,20 +119,24 @@ public class Round {
                             }
                             else{
                                 try {
+                                    acusaciones++;
                                     Thread.sleep(2000);
+                                    
                                 } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
-                                juicio=true;
                                 break;
                             }                            
                         }
                     }
                 }
             }
-            if(juicio){
+
+            //En el caso de que haya más de un asesinato por ronda se celebrarán varios juicios
+            for (int i = 0; i < acusaciones; i++) {
                 acusaciones();
             }
+
         }            
     }
 
@@ -228,5 +237,26 @@ public class Round {
         for (Tarea tarea : tareas) {
             tarea.getHabitacion().limpiaMuertos();
         }
+    }
+
+    //Devuelve un string con todos los jugadores muertos de una habitación
+    String listaMuertos(ArrayList<Jugador> m){
+        String difuntos = "";        
+        if(m.size()>1){
+            difuntos+="los cadáveres de ";
+            for (int i = 0; i < m.size()-1; i++) {
+                if(i>0){
+                    difuntos+=", ";
+                }
+                difuntos+=m.get(i).getAlias();
+            }
+            difuntos+="y "+m.get(m.size()-1).getAlias();
+        }        
+
+        else{
+            difuntos+="el cadáver de "+m.get(0).getAlias();
+        }
+        
+        return difuntos;
     }
 }
