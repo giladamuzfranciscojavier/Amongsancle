@@ -9,7 +9,7 @@ import tools.ScannerFactory;
 
 public class GameController {    
 
-    int tiempoMax = Settings.getTiempoMax();
+    int tiempoMax = Settings.getSettings().getTiempoMax();
 
     //Versión de las listas que permanecerá en memoria en caso de reiniciar
     ArrayList<Estudiante> saveEstudiantes;
@@ -19,7 +19,7 @@ public class GameController {
     ArrayList<Jugador> jugadores;
     ArrayList<Estudiante> estudiantes;
     ArrayList<Impostor> impostores;
-    ArrayList<Tarea> tareas = Settings.getTareas();
+    ArrayList<Tarea> tareas = Settings.getSettings().getTareas();
     Scanner sc;
 
     //Inicialización y reparto de tareas
@@ -28,7 +28,7 @@ public class GameController {
         saveImpostores = new ArrayList<>();
         sc = ScannerFactory.getScanner();
 
-        ArrayList<String> tempjugadores = Settings.getJugadores();
+        ArrayList<String> tempjugadores = Settings.getSettings().getJugadores();
         Random r = new Random();
         //Número máximo de impostores: la mitad del total de jugadores menos uno
         int sus = r.nextInt(1, Math.max(1, tempjugadores.size()/2));
@@ -53,7 +53,7 @@ public class GameController {
         //Se asignan las tareas. Los impostores también tendrán tareas, pero por razones evidentes no influirán en el resultado
         for (Jugador jugador : jugadores) {
             //Las tareas se pueden repetir entre jugadores, pero no en el mismo jugador
-            ArrayList<Tarea> tareas = Settings.getTareas();
+            ArrayList<Tarea> tareas = Settings.getSettings().getTareas();
             for (int i = 0; i < 5; i++) {
                 Tarea t = tareas.get(r.nextInt(tareas.size()));
                 tareas.remove(t);

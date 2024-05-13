@@ -6,46 +6,59 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Settings {
-    static ArrayList<Tarea> tareas;
-    static ArrayList<Habitacion> habitaciones;
+    ArrayList<Tarea> tareas;
+    ArrayList<Habitacion> habitaciones;
     //No tiene sentido listar objetos Jugador ya que el rol se asigna en partida y por lo tanto sería redundante
-    static ArrayList<String> jugadores;       
-    static int tiempoMax;   
-    static boolean debug; 
+    ArrayList<String> jugadores;       
+    int tiempoMax;   
+    boolean debug; 
 
     //La probabilidad de que una acusación sea mentira
-    static double probMentira;
+    double probMentira;
 
     private Settings(){}
 
-    //Inicialización y restablecimiento a las opciones por defecto
-    public static void init(){
-        tareas = new ArrayList<>();
-        jugadores = new ArrayList<>();
-        habitaciones = new ArrayList<>();
-        tiempoMax = 15;    
+    static Settings settings;
 
-        probMentira = .5;
-
-        Settings.addTarea("Reparar el proyector","Aula de la bodega");     
-        Settings.addTarea("Encontrar documento","Secretaria");
-        Settings.addTarea("Cambiar cable Ethernet","Sala de profesorado");
-        Settings.addTarea("Recoger tizas","Conserjería");
-        Settings.addTarea("Proyectar película","Aula de la bodega");
-        Settings.addTarea("Reparar ordenadores","Aula 01");
-        Settings.addTarea("Fotocopiar documento","Conserjería");        
-        Settings.addTarea("Limpiar aula","Aula 01");        
-        Settings.addTarea("Reparar máquina de café","Sala de profesorado");
-        Settings.addTarea("Investigar alumnos","Secretaria");
-
-        Settings.addJugador("El_Sus");
-        Settings.addJugador("Amogus");
-        Settings.addJugador("Sussus_Amogus");   
-        Settings.addJugador("xXx_aM0G0_xXx");     
-        Settings.addJugador("Streamer_Generico42069");
+    
+    public static Settings getSettings(){
+        if(settings==null){
+            settings = new Settings();
+            settings.init();
+        }
+        return settings;        
     }
 
-    static public ArrayList<Tarea> getTareas() {
+    //Inicialización y restablecimiento a las opciones por defecto
+    public void init(){
+        settings.tareas = new ArrayList<>();
+        settings.jugadores = new ArrayList<>();
+        settings.habitaciones = new ArrayList<>();
+        settings.tiempoMax = 15;    
+
+        settings.probMentira = .5;
+
+        settings.addTarea("Reparar el proyector","Aula de la bodega");     
+        settings.addTarea("Encontrar documento","Secretaria");
+        settings.addTarea("Cambiar cable Ethernet","Sala de profesorado");
+        settings.addTarea("Recoger tizas","Conserjería");
+        settings.addTarea("Proyectar película","Aula de la bodega");
+        settings.addTarea("Reparar ordenadores","Aula 01");
+        settings.addTarea("Fotocopiar documento","Conserjería");        
+        settings.addTarea("Limpiar aula","Aula 01");        
+        settings.addTarea("Reparar máquina de café","Sala de profesorado");
+        settings.addTarea("Investigar alumnos","Secretaria");
+
+        settings.addJugador("El_Sus");
+        settings.addJugador("Amogus");
+        settings.addJugador("Sussus_Amogus");   
+        settings.addJugador("xXx_aM0G0_xXx");     
+        settings.addJugador("Streamer_Generico42069");
+        settings.addJugador("SussyBaka");
+        settings.addJugador("NoSeMeOcurrenMásNombres");
+    }
+
+    public ArrayList<Tarea> getTareas() {
         ArrayList<Tarea> temp = new ArrayList<>();
 
         for (Tarea tarea : tareas) {
@@ -55,15 +68,15 @@ public class Settings {
         return temp;
     }
 
-    public static double getProbMentira() {
+    public double getProbMentira() {
         return probMentira;
     }
 
-    public static void setProbMentira(double probMentira) {
-        Settings.probMentira = probMentira;
+    public void setProbMentira(double probMentira) {
+        this.probMentira = probMentira;
     }
 
-    static public void addTarea(String tarea, String habitacion) {
+    public void addTarea(String tarea, String habitacion) {
         Habitacion h = null;
         
         for (Habitacion habitacion2 : habitaciones) {
@@ -83,7 +96,7 @@ public class Settings {
         tareas.sort(null);
     }
 
-    public static ArrayList<Habitacion> getHabitaciones() {
+    public ArrayList<Habitacion> getHabitaciones() {
         ArrayList<Habitacion> temp = new ArrayList<>();
 
         for (Habitacion h : habitaciones) {
@@ -95,7 +108,7 @@ public class Settings {
 
 
     //Elimina la habitación Y las tareas que pertenecen a la misma
-    static public void RemoveHabitacion(Habitacion h){
+    public void RemoveHabitacion(Habitacion h){
 
         //Se utiliza un iterator para poder borrar las tareas que pertenezcan a la habitación que se va a eliminar
         Iterator<Tarea> it = tareas.iterator();
@@ -109,16 +122,16 @@ public class Settings {
         habitaciones.remove(h);
     }
 
-    static public void addHabitacion(String habitacion) {
+    public void addHabitacion(String habitacion) {
         habitaciones.add(new Habitacion(habitacion));
         habitaciones.sort(null);
     }
 
-    static public void removeTarea(Tarea t){
+    public void removeTarea(Tarea t){
         tareas.remove(t);
     }
 
-    static public ArrayList<String> getJugadores() {
+    public ArrayList<String> getJugadores() {
         ArrayList<String> temp = new ArrayList<>();
 
         for (String jugador : jugadores) {
@@ -127,20 +140,20 @@ public class Settings {
         return temp;
     }
 
-    static public void addJugador(String jugador){
+    public void addJugador(String jugador){
         jugadores.add(("@"+jugador));
         jugadores.sort(null);
     }
 
-    static public void removeJugador(String jugador){
+    public void removeJugador(String jugador){
         jugadores.remove(jugador);
     }
 
-    static public int getTiempoMax() {
+    public int getTiempoMax() {
         return tiempoMax;
     }
 
-    static public void setTiempoMax(int tMax) {
+    public void setTiempoMax(int tMax) {
         //Para evitar que haya menos tiempo del necesario para la entrada (lo que bloquearía el juego en un estado imposible de ganar) el tiempo máximo será como mínimo 5
         if(tMax<5){
             tMax=5;
@@ -148,11 +161,11 @@ public class Settings {
         tiempoMax = tMax;
     }     
 
-    public static void setDebug(boolean d){
+    public void setDebug(boolean d){
         debug=d;
     }
 
-    public static boolean getDebug(){
+    public boolean getDebug(){
         return debug;
     }
 }

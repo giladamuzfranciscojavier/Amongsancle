@@ -31,7 +31,7 @@ class AddTarea extends ComponenteMenu{
 
         System.out.println();
 
-        ArrayList<Habitacion> list = Settings.getHabitaciones();
+        ArrayList<Habitacion> list = Settings.getSettings().getHabitaciones();
 
         for(int i = 0;i<list.size();i++){
             System.out.println(i+". "+list.get(i).getNombre());
@@ -51,7 +51,7 @@ class AddTarea extends ComponenteMenu{
             }
         }
 
-        Settings.addTarea(t, h);  
+        Settings.getSettings().addTarea(t, h);  
         padre.ejecutar();        
     }
     
@@ -67,7 +67,7 @@ class RemoveTarea extends ComponenteMenu{
     void ejecutar() throws IOException {
         System.out.println(ConsoleCodes.CLEAR);
 
-        List<Tarea> list = Settings.getTareas();
+        List<Tarea> list = Settings.getSettings().getTareas();
 
         for(int i = 0;i<list.size();i++){
             System.out.println(i+". "+list.get(i));
@@ -87,7 +87,7 @@ class RemoveTarea extends ComponenteMenu{
 
             if(numOpcion>=0 && numOpcion<list.size()){
                 numMenu=numOpcion;       
-                Settings.removeTarea(list.get(numMenu));                
+                Settings.getSettings().removeTarea(list.get(numMenu));                
             }
         }
 
@@ -107,7 +107,7 @@ class VerTareas extends ComponenteMenu{
     @Override
     void ejecutar() throws IOException {
         System.out.println(ConsoleCodes.CLEAR);
-        for (Tarea tarea : Settings.getTareas()) {
+        for (Tarea tarea : Settings.getSettings().getTareas()) {
             System.out.println(tarea);
         }
         System.out.println("\nPresiona ENTER para continuar");
@@ -132,12 +132,12 @@ class AddJugador extends ComponenteMenu{
             System.out.println("Introduce el nombre del jugador");
             j=sc.nextLine();
 
-            if(Settings.getJugadores().contains("@"+j)){
+            if(Settings.getSettings().getJugadores().contains("@"+j)){
                 System.out.println("Error, ya existe un jugador con ese nombre\n");
                 j="";
             }
         }
-        Settings.addJugador(j);  
+        Settings.getSettings().addJugador(j);  
         padre.ejecutar();        
     }
 }
@@ -152,7 +152,7 @@ class RemoveJugador extends ComponenteMenu{
     @Override
     void ejecutar() throws IOException {
         System.out.println(ConsoleCodes.CLEAR);
-        List<String> list = Settings.getJugadores();
+        List<String> list = Settings.getSettings().getJugadores();
 
         for(int i = 0;i<list.size();i++){
             System.out.println(i+". "+list.get(i));
@@ -174,7 +174,7 @@ class RemoveJugador extends ComponenteMenu{
             if(numOpcion>=0 && numOpcion<list.size()){
                 numMenu=numOpcion;     
                 
-                Settings.removeJugador(list.get(numMenu));    
+                Settings.getSettings().removeJugador(list.get(numMenu));    
             }
         }
         padre.ejecutar(); 
@@ -191,7 +191,7 @@ class VerJugadores extends ComponenteMenu{
     @Override
     void ejecutar() throws IOException {
         System.out.println(ConsoleCodes.CLEAR);
-        for (String j : Settings.getJugadores()) {
+        for (String j : Settings.getSettings().getJugadores()) {
             System.out.println(j);
         }
         System.out.println("\nPresiona ENTER para continuar");
@@ -202,7 +202,7 @@ class VerJugadores extends ComponenteMenu{
 
 class SetMaxTime extends ComponenteMenu{
     SetMaxTime(Scanner sc) {
-        super("Configurar Tiempo Máximo de Respuesta. Tiempo actual: "+Settings.getTiempoMax(), sc);
+        super("Configurar Tiempo Máximo de Respuesta. Tiempo actual: "+Settings.getSettings().getTiempoMax(), sc);
     }
 
     @Override
@@ -213,8 +213,8 @@ class SetMaxTime extends ComponenteMenu{
         if(opcion.matches("\\d{1,4}")){
             System.out.println("a");
             int numOpcion = Integer.parseInt(opcion);
-            Settings.setTiempoMax(numOpcion);
-            this.nombre = "Configurar Tiempo Máximo de Respuesta. Tiempo actual: "+Settings.getTiempoMax();
+            Settings.getSettings().setTiempoMax(numOpcion);
+            this.nombre = "Configurar Tiempo Máximo de Respuesta. Tiempo actual: "+Settings.getSettings().getTiempoMax();
         }
     }
 }
@@ -235,7 +235,7 @@ class AddHabitacion extends ComponenteMenu{
             System.out.println("\nIntroduce el nombre de la habitación");
             h=sc.nextLine();
         }
-        Settings.addHabitacion(h);  
+        Settings.getSettings().addHabitacion(h);  
         padre.ejecutar();     
 
     
@@ -251,7 +251,7 @@ class RemoveHabitacion extends ComponenteMenu{
     @Override
     void ejecutar() throws IOException {
         System.out.println(ConsoleCodes.CLEAR);
-        List<Habitacion> list = Settings.getHabitaciones();
+        List<Habitacion> list = Settings.getSettings().getHabitaciones();
 
         for(int i = 0;i<list.size();i++){
             System.out.println(i+". "+list.get(i).getNombre());
@@ -272,7 +272,7 @@ class RemoveHabitacion extends ComponenteMenu{
 
             if(numOpcion>=0 && numOpcion<list.size()){
                 numMenu=numOpcion;                     
-                Settings.RemoveHabitacion(list.get(numMenu));    
+                Settings.getSettings().RemoveHabitacion(list.get(numMenu));    
             }
         }
         padre.ejecutar(); 
@@ -288,7 +288,7 @@ class VerHabitaciones extends ComponenteMenu{
     @Override
     void ejecutar() throws IOException {
         System.out.println(ConsoleCodes.CLEAR);
-        for (Habitacion h : Settings.getHabitaciones()) {
+        for (Habitacion h : Settings.getSettings().getHabitaciones()) {
             System.out.println(h.getNombre());
         }
         System.out.println("\nPresiona ENTER para continuar");
@@ -299,7 +299,7 @@ class VerHabitaciones extends ComponenteMenu{
 
 class ProbMentira extends ComponenteMenu{
     ProbMentira(Scanner sc){
-        super("Configurar probabilidad de acusaciones falsas. Probabilidad actual: "+(int)(Settings.getProbMentira()*100), sc);
+        super("Configurar probabilidad de acusaciones falsas. Probabilidad actual: "+(int)(Settings.getSettings().getProbMentira()*100), sc);
     }
 
     @Override
@@ -313,18 +313,18 @@ class ProbMentira extends ComponenteMenu{
         if(input.matches("\\d+")){
             int in = Integer.parseInt(input);
             if(in>-1 && in<101){
-                Settings.setProbMentira((double) in/100.0);
+                Settings.getSettings().setProbMentira((double) in/100.0);
             }
             else{
-                Settings.setProbMentira(.5);
+                Settings.getSettings().setProbMentira(.5);
             }
         }
 
         else{
-            Settings.setProbMentira(.5);
+            Settings.getSettings().setProbMentira(.5);
         }
 
-        nombre = "Configurar probabilidad de acusaciones falsas. Probabilidad actual: "+(int)(Settings.getProbMentira()*100);
+        nombre = "Configurar probabilidad de acusaciones falsas. Probabilidad actual: "+(int)(Settings.getSettings().getProbMentira()*100);
         padre.ejecutar();
     }
 }
@@ -349,12 +349,12 @@ class Debug extends ComponenteMenu{
 
     @Override
     void ejecutar() throws IOException {
-        if(!Settings.getDebug()){
-            Settings.setDebug(true);
+        if(!Settings.getSettings().getDebug()){
+            Settings.getSettings().setDebug(true);
             nombre="Desactivar modo debug (se muestra quien mata a quien)";
         }
         else{
-            Settings.setDebug(false);
+            Settings.getSettings().setDebug(false);
             nombre="Activar modo debug (se muestra quien mata a quien)";
         }
         padre.ejecutar();

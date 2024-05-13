@@ -90,7 +90,7 @@ public class Round {
                                 }
                             }
                             impostor.kill(e, it, jug, e.getHabitacionActual(),playerStatus);
-                            if(Settings.getDebug()){
+                            if(Settings.getSettings().getDebug()){
                                 System.out.println(impostor.getAlias()+" ha matado a "+e.getAlias());
                             }
                             mata=true;
@@ -101,7 +101,7 @@ public class Round {
                             System.out.println("\n\n\n");
 
                             //Probabilidad de que el testigo acuse al impostor. En caso contrario, el impostor intentará acusar al testigo
-                            if(Math.random()>Settings.getProbMentira()){
+                            if(Math.random()>Settings.getSettings().getProbMentira()){
                                 System.out.println(ConsoleCodes.RED+e.getAlias()+" acusa a "+impostor.getAlias()+" de asesinato!"+ConsoleCodes.RESET);
                             }
                             else{
