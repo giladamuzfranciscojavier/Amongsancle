@@ -216,6 +216,7 @@ class SetMaxTime extends ComponenteMenu{
             Settings.getSettings().setTiempoMax(numOpcion);
             this.nombre = "Configurar Tiempo Máximo de Respuesta. Tiempo actual: "+Settings.getSettings().getTiempoMax();
         }
+        padre.ejecutar();
     }
 }
 
