@@ -1,4 +1,4 @@
-NOTA IMPORTANTE (2025)
+# NOTA IMPORTANTE (2025)
 El siguiente proyecto se muestra tal cual se presentó como tarea del módulo de Programación de DAM, siendo los únicos añadidos recientes esta pequeña nota y la release compilada. Consiste en un pequeño videojuego con interfaz de usuario por consola inspirado en el famoso videojuego Among Us. Además de los puntos tratados en el resto del documento, uno de los objetivos de la tarea era el desarrollo de menús mediante el patrón composite.
 
 Desafortunadamente, el código empleado para limpiar refrescar la consola no funciona en determinados terminales de consola, incluídos los de windows (el proyecto fue desarrollado y probado en visual studio code, en cuyo terminal sí funciona).
